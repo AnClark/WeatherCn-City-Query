@@ -50,10 +50,17 @@ QList<QMAP_CANDIDATE> WeatherCnCityQuerier::getAndParseJson(QString keyword)
     // 存放解析结果的列表
     QList<QMAP_CANDIDATE> candidates;
 
+    // 互斥锁检查。一旦上了互斥锁，就说明有另一个过程正在进行，则当前过程就不应再继续。
+    if(mutexLock)
+        return candidates;
+
     /**
      * 【第一步】
      * 访问API，取得JSON。
      */
+
+    mutexLock = true;                       // 上互斥锁
+
     QString URLSTR = QUERY_URL;             // 载入预先定义好的API地址
 
     // 生成URL对象
@@ -120,5 +127,6 @@ QList<QMAP_CANDIDATE> WeatherCnCityQuerier::getAndParseJson(QString keyword)
         candidates.push_back(cityItem);
     }
 
+    mutexLock = false;          // 解互斥锁
     return candidates;
 }

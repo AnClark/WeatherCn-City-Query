@@ -36,6 +36,9 @@ private:
     QStandardItemModel *model;          // 供TableView使用的model
     // 获取并解析中国天气网API返回的JSON
     QList<QMAP_CANDIDATE> getAndParseJson(QString keyword);
+
+    // 互斥锁，防止因输入过快或网络延迟导致TableView中出现重复项
+    bool mutexLock = false;
 };
 
 #endif // WEATHERCNCITYQUERIER_H
