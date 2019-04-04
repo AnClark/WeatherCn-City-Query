@@ -1,0 +1,4 @@
+# Qt Creator configuration files
+# This code is to be used in different platforms.
+*.pro.user
+
